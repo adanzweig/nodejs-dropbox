@@ -58,6 +58,19 @@ async function downloadFile(fileToDownload, path){
     }
 }
 
+// Delete a file from dropbox
+async function deleteFile(path){
+    try{
+        // Request to delete a file from Dropbox
+        const fileDeleted = await dbx.filesDeleteV2({path});
+        // Return the result of the delete operation
+        return fileDeleted;
+    }catch(error){
+        //Log any errors that occur
+        console.error('Error:',error);
+    }
+}
+
 // Self-invoking asynchronous function to execute the file operations
 (async () => {
     // Get and log the list of all files at the Dropbox root
@@ -75,4 +88,8 @@ async function downloadFile(fileToDownload, path){
     // Download a file and log a confirmation message
     const fileDonwloaded = await downloadFile("/packageuploaded.json", './packagedownloaded.json');
     console.log('file Downloaded');
+    
+    // Delete a file and log the result
+    const fileDeleted = await deleteFile('/packageuploaded.json');
+    console.log(fileDeleted);
 })();
